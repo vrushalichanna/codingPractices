@@ -1,6 +1,7 @@
 package com.libraryManagementSystem.utility;
 
 import com.libraryManagementSystemSevice.LibraryService;
+import com.libraryManagementSystemSevice.LibraryServiceImpl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,7 +16,7 @@ public class Library {
     }
 
     Scanner c = new Scanner(System.in);
-    LibraryService libraryService;
+    LibraryService libraryService = new LibraryServiceImpl();
 
     // static variable library_instance of type Library
     private static Library library_instance = null;
@@ -45,6 +46,7 @@ public class Library {
         Category category = Category.valueOf(c.nextLine().toUpperCase());
         Book book = new Book(bookId, title, category, authorlist);
         libraryService.add(book);
+//        library_instance.addBook(book);
     }
 
     /**

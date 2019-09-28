@@ -3,24 +3,13 @@ package com.libraryManagementSystemSevice;
 import com.libraryManagementSystem.utility.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LibraryServiceImpl implements LibraryService {
 
-    static List<BookStore> bookList = new ArrayList<>();
-    static List<BookIssued> issuedBooksList = new ArrayList<>();
-    static List<BookIssued> returnBooksList = new ArrayList<>();
-
-    static LibraryServiceImpl library = null;
-
-    private LibraryServiceImpl() {
-    }
-
-    public static LibraryServiceImpl getInstance() {
-        if (library == null)
-            return new LibraryServiceImpl();
-        return library;
-    }
+    List<BookStore> bookList = new ArrayList<>();
+    List<BookIssued> issuedBooksList = new ArrayList<>();
 
 
     @Override
@@ -45,15 +34,23 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void view() {
-        for (BookStore book : bookList)
-            System.out.println(book.toString());
+        for (BookStore book : bookList) {
+            System.out.println(book.getBook().getTitle());
+            System.out.println(book.getBook().getAuthors());
+            System.out.println(book.getBook().getBookId());
+            System.out.println(book.getBook().getCategory());
+            System.out.println(book.getQuntity());
+        }
+//        System.out.println(bookList);
     }
+
 
     @Override
     public Boolean deleteBookItem(String title) {
         BookStore book = searchByTitle(title);
         if (book != null) {
             bookList.remove(book);
+            System.out.println("Book Deleted =:" + book.getBook().getTitle());
             return true;
         }
         return false;
@@ -62,11 +59,16 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public BookStore searchByTitle(String title) {
         List<BookStore> store = new ArrayList<>();
-        for (int i = 0; i < bookList.size(); i++) {
-            BookStore book = bookList.get(i);
-            if (book.getBook().getTitle().equals(title)) {
-                return book;
+        if (bookList.size() > 0) {
+            for (int i = 0; i < bookList.size(); i++) {
+                BookStore book = bookList.get(i);
+                if (book.getBook().getTitle().equals(title)) {
+                    System.out.println("Book Found In library =:" + book.getBook().getTitle());
+                    return book;
+                }
             }
+        } else {
+            System.out.println("No books found in the library");
         }
         return null;
     }
@@ -75,16 +77,21 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public List<BookStore> searchByAuthor(String author) {
         List<BookStore> searchByAuthor = new ArrayList<>();
-        for (BookStore book : bookList) {
-            List<Author> authorList = book.getBook().getAuthors();
-            for (Author author1 : authorList) {
-                if (author1.getAuthorName().equals(author)) {
-                    searchByAuthor.add(book);
+        if (searchByAuthor.size() > 0) {
+            for (BookStore book : bookList) {
+                List<Author> authorList = book.getBook().getAuthors();
+                for (Author author1 : authorList) {
+                    if (author1.getAuthorName().equals(author)) {
+                        System.out.println("Author Book Found In library =:" + book.getBook().getAuthors());
+                        searchByAuthor.add(book);
+                    }
                 }
-            }
 
+            }
+        } else {
+            System.out.println("No books found in the library");
         }
-        return searchByAuthor;
+        return null;
     }
 
     @Override
